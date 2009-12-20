@@ -23,49 +23,47 @@ However, enabling runtime.GOMAXPROCS(2) causes some errors as follows:
 Yields (note normal output is disabled as it tramples over the runtime error):
 
     throw: assert
-    panic PC=0x7facf21d5d98
+    panic PC=0x7f4c68b43030
     throw+0x3e /home/alex/go/src/pkg/runtime/runtime.c:74
-        throw(0x455ad1, 0x0)
-    hash_insert_internal+0x3fa /home/alex/go/src/pkg/runtime/hashmap.c:416
-        hash_insert_internal(0xf2190258, 0x7fac, 0x2, 0x7fac, 0x2a48700, ...)
-    hash_grow+0xea /home/alex/go/src/pkg/runtime/hashmap.c:283
-        hash_grow(0xf2190230, 0x7fac, 0xf2190258, 0x7fac, 0x2, ...)
+        throw(0x434a12, 0x0)
+    hash_grow+0xfd /home/alex/go/src/pkg/runtime/hashmap.c:284
+        hash_grow(0x68bcfcb0, 0x7f4c, 0x68bcfcd8, 0x7f4c, 0x2, ...)
     hash_insert_internal+0x19c /home/alex/go/src/pkg/runtime/hashmap.c:450
-        hash_insert_internal(0xf2190258, 0x7fac, 0x0, 0x7fac, 0xa4cf75c0, ...)
+        hash_insert_internal(0x68bcfcd8, 0x7f4c, 0x0, 0x7f4c, 0x45366480, ...)
     hash_insert+0x6e /home/alex/go/src/pkg/runtime/hashmap.c:460
-        hash_insert(0xf2190230, 0x7fac, 0xf21d6050, 0x7fac, 0xf21d5ff8, ...)
+        hash_insert(0x68bcfcb0, 0x7f4c, 0x68b43250, 0x7f4c, 0x68b431f8, ...)
     mapassign+0x5e /home/alex/go/src/pkg/runtime/hashmap.c:821
-        mapassign(0xf2190230, 0x7fac, 0xf21d6050, 0x7fac, 0xf21d6058, ...)
+        mapassign(0x68bcfcb0, 0x7f4c, 0x68b43250, 0x7f4c, 0x68b43258, ...)
     runtime·mapassign1+0x4b /home/alex/go/src/pkg/runtime/hashmap.c:849
-        runtime·mapassign1(0xf2190230, 0x7fac)
-    main·*walker·walk+0x8e /home/alex/git/mazes/mazes.go:197
-        main·*walker·walk(0xf218ab40, 0x7fac, 0xf218e240, 0x7fac, 0xf218e300, ...)
+        runtime·mapassign1(0x68bcfcb0, 0x7f4c)
+    main·*walker·walk+0x8e /home/alex/git/mazes/mazes.go:195
+        main·*walker·walk(0x68b789a0, 0x7f4c, 0x68bb31b0, 0x7f4c, 0x68bb3570, ...)
     goexit /home/alex/go/src/pkg/runtime/proc.c:136
         goexit()
-    0x7facf218ab40 unknown pc
+    0x7f4c68b789a0 unknown pc
 
-    goroutine 3 [4]:
+    goroutine 3 [2]:
     gosched+0x34 /home/alex/go/src/pkg/runtime/proc.c:522
         gosched()
-    chanrecv+0x167 /home/alex/go/src/pkg/runtime/chan.c:347
-        chanrecv(0xf218d1e0, 0x7fac, 0xf21951a8, 0x7fac, 0x0, ...)
+    chanrecv+0x179 /home/alex/go/src/pkg/runtime/chan.c:349
+        chanrecv(0x68b3a1e0, 0x7f4c, 0x68b421a8, 0x7f4c, 0x0, ...)
     runtime·chanrecv1+0x50 /home/alex/go/src/pkg/runtime/chan.c:417
-        runtime·chanrecv1(0xf218d1e0, 0x7fac)
-    main·readMazes+0xe0 /home/alex/git/mazes/mazes.go:112
-        main·readMazes(0xf218d1e0, 0x7fac, 0xf218d240, 0x7fac)
+        runtime·chanrecv1(0x68b3a1e0, 0x7f4c)
+    main·readMazes+0xe0 /home/alex/git/mazes/mazes.go:110
+        main·readMazes(0x68b3a1e0, 0x7f4c, 0x68b3a240, 0x7f4c)
     goexit /home/alex/go/src/pkg/runtime/proc.c:136
         goexit()
-    0x7facf218d1e0 unknown pc
+    0x7f4c68b3a1e0 unknown pc
 
-    goroutine 2 [4]:
+    goroutine 2 [1]:
     gosched+0x34 /home/alex/go/src/pkg/runtime/proc.c:522
         gosched()
     chansend+0x14c /home/alex/go/src/pkg/runtime/chan.c:245
-        chansend(0xf218d1e0, 0x7fac, 0xf2194070, 0x7fac, 0x0, ...)
+        chansend(0x68b3a1e0, 0x7f4c, 0x68b41068, 0x7f4c, 0x0, ...)
     runtime·chansend1+0x54 /home/alex/go/src/pkg/runtime/chan.c:389
-        runtime·chansend1(0xf218d1e0, 0x7fac)
-    main·_func_001+0x122 /home/alex/git/mazes/mazes.go:85
-        main·_func_001(0xf2189018, 0x7fac, 0xf218c790, 0x7fac, 0xf2189020, ...)
+        runtime·chansend1(0x68b3a1e0, 0x7f4c)
+    main·_func_001+0xfa /home/alex/git/mazes/mazes.go:84
+        main·_func_001(0x68b36028, 0x7f4c, 0x68b36020, 0x7f4c, 0x68b36018, ...)
     goexit /home/alex/go/src/pkg/runtime/proc.c:136
         goexit()
 
@@ -73,9 +71,9 @@ Yields (note normal output is disabled as it tramples over the runtime error):
     gosched+0x34 /home/alex/go/src/pkg/runtime/proc.c:522
         gosched()
     chanrecv+0x167 /home/alex/go/src/pkg/runtime/chan.c:347
-        chanrecv(0xf218d240, 0x7fac, 0xf2192f40, 0x7fac, 0x0, ...)
+        chanrecv(0x68b3a240, 0x7f4c, 0x68b3ff40, 0x7f4c, 0x0, ...)
     runtime·chanrecv1+0x50 /home/alex/go/src/pkg/runtime/chan.c:417
-        runtime·chanrecv1(0xf218d240, 0x7fac)
+        runtime·chanrecv1(0x68b3a240, 0x7f4c)
     main·main+0x126 /home/alex/git/mazes/mazes.go:49
         main·main()
     mainstart+0xf /home/alex/go/src/pkg/runtime/amd64/asm.s:54
