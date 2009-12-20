@@ -2,9 +2,9 @@ package main
 
 import (
 	"os"
-//	"net"
+	"bufio"
 	"fmt"
-	"runtime"
+//	"runtime"
 )
 
 // at a point on the maze, can we go north, east, south, or west
@@ -36,7 +36,7 @@ type walker struct {
 var WID int = 0
 
 func main() {
-	runtime.GOMAXPROCS(2)
+//	runtime.GOMAXPROCS(2)
 	if len(os.Args) != 2 {
 		fmt.Println("mazes <file>, fool")
 		return
@@ -52,6 +52,7 @@ func main() {
 		w := newWalker()
 		ch := make(chan *walker)
 		go w.walk(m, m.start, ch)
+//		<-ch
 		for res := range ch {
 			fmt.Printf("walker %d found path '%s'\n", res.id, res.path)
 		}
@@ -66,23 +67,21 @@ func mazeReader(path string) (chan *maze, os.Error) {
 
 	in := make(chan byte, 1)
 	out := make(chan *maze, 1)
-	a := make([]byte, 512)
+	br := bufio.NewReader(file)
 
 	go func() {
 		for {
-			n, err := file.Read(a)
+			s, err := br.ReadString('\n')
 			if err != nil {
 				close(in)
 				break
 			}
-			for i := 0; i < n; i++ {
-				// dirty hax to detect \n\n and turn to \0
-				if a[i] == '\n' && a[i+1] == '\n' {
-					in <- '\xff'
-					i++
-				} else {
-					in <- a[i]
-				}
+			if s == "\n" {
+				in <- '\xff'
+				continue
+			}
+			for i := 0; i < len(s); i++ {
+				in <- s[i]
 			}
 		}
 		file.Close()
@@ -185,6 +184,9 @@ func (w *walker) clone() *walker {
 }
 
 func (w *walker) walk(m *maze, n *node, ch chan *walker) {
+	if closed(ch) {
+		return
+	}
 	if n == m.finish {
 		ch <- w
 		close(ch)
