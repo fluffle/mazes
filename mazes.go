@@ -4,7 +4,7 @@ import (
 	"os"
 	"bufio"
 	"fmt"
-//	"runtime"
+	"runtime"
 )
 
 // at a point on the maze, can we go north, east, south, or west
@@ -36,7 +36,7 @@ type walker struct {
 var WID int = 0
 
 func main() {
-//	runtime.GOMAXPROCS(2)
+	runtime.GOMAXPROCS(2)
 	if len(os.Args) != 2 {
 		fmt.Println("mazes <file>, fool")
 		return
@@ -47,15 +47,15 @@ func main() {
 		return
 	}
 	for m := range mazes {
-		fmt.Printf("width: %d; length: %d; nodes: %d\n", m.w, m.l, m.count)
+//		fmt.Printf("width: %d; length: %d; nodes: %d\n", m.w, m.l, m.count)
 
 		w := newWalker()
 		ch := make(chan *walker)
 		go w.walk(m, m.start, ch)
-//		<-ch
-		for res := range ch {
-			fmt.Printf("walker %d found path '%s'\n", res.id, res.path)
-		}
+		<-ch
+//		for res := range ch {
+//			fmt.Printf("walker %d found path '%s'\n", res.id, res.path)
+//		}
 	}
 }
 
