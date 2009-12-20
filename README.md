@@ -82,3 +82,13 @@ Yields (note normal output is disabled as it tramples over the runtime error):
         mainstart()
     goexit /home/alex/go/src/pkg/runtime/proc.c:136
         goexit()
+
+I did also see once:
+
+    throw: throw: assert
+    panic PC=0x7f302fe56e30
+    assert
+    double panic
+
+Which was more worrying! OH NOES DOUBLE PANIC!
+
