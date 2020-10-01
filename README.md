@@ -1,3 +1,4 @@
+Problem solved
 http://brycekerley.net/blog/2009/06/trivia300.html
 
 I was playing with some code to solve the problem described above, and...
